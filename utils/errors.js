@@ -1,19 +1,9 @@
-const User = require("../models/user");
+const BAD_REQUEST = 400;
+const NOT_FOUND = 404;
+const INTERNAL_SERVER_ERROR = 500;
 
-// POST /users
-const createUser = (req, res) => {
-  const { name, avatar } = req.body;
-  User.create({ name, avatar })
-    .then((user) => res.status(201).send(user))
-    .catch((err) => {
-      console.error(err);
-
-      if (err.name === "ValidationError") {
-        res.status(400).send({ message: err.message });
-      } else {
-      }
-      res.status(500).send({ message: err.message });
-    });
+module.exports = {
+  BAD_REQUEST,
+  NOT_FOUND,
+  INTERNAL_SERVER_ERROR,
 };
-
-module.exports = { createUser };

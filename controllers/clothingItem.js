@@ -1,5 +1,12 @@
 const ClothingItem = require("../models/clothingItem");
 
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  INTERNAL_SERVER_ERROR,
+} = require("../utils/errors");
+
+// POST /items
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
@@ -9,26 +16,37 @@ const createItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+
       if (err.name === "ValidationError") {
-        return res.status(400).send({ error: err.message });
+        return res.status(BAD_REQUEST).send({
+          error: err.message,
+        });
       }
-      res
-        .status(500)
-        .send({ message: "Error from createItem", error: err.message });
+
+      return res.status(INTERNAL_SERVER_ERROR).send({
+        message: "Error from createItem",
+        error: err.message,
+      });
     });
 };
 
+// GET /items
 const getItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
     .catch((err) => {
       console.error(err);
-      res.status(500).send({ error: "Failed to load items" });
+
+      return res.status(INTERNAL_SERVER_ERROR).send({
+        error: "Failed to load items",
+      });
     });
 };
 
+// DELETE /items/:itemId
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
+
   ClothingItem.findByIdAndDelete(itemId)
     .orFail(new Error("Item not found"))
     .then((item) => {
@@ -36,18 +54,29 @@ const deleteItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+
       if (err.name === "CastError") {
-        return res.status(400).send({ error: "Invalid item ID format" });
+        return res.status(BAD_REQUEST).send({
+          error: "Invalid item ID format",
+        });
       }
+
       if (err.message === "Item not found") {
-        return res.status(404).send({ error: "Item not found" });
+        return res.status(NOT_FOUND).send({
+          error: "Item not found",
+        });
       }
-      res.status(500).send({ error: "Failed to delete item" });
+
+      return res.status(INTERNAL_SERVER_ERROR).send({
+        error: "Failed to delete item",
+      });
     });
 };
 
+// PUT /items/:itemId/likes
 const likeItem = (req, res) => {
   const { itemId } = req.params;
+
   ClothingItem.findByIdAndUpdate(
     itemId,
     { $addToSet: { likes: req.user._id } },
@@ -59,18 +88,29 @@ const likeItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+
       if (err.name === "CastError") {
-        return res.status(400).send({ error: "Invalid item ID format" });
+        return res.status(BAD_REQUEST).send({
+          error: "Invalid item ID format",
+        });
       }
+
       if (err.message === "Item not found") {
-        return res.status(404).send({ error: "Item not found" });
+        return res.status(NOT_FOUND).send({
+          error: "Item not found",
+        });
       }
-      res.status(500).send({ error: "Failed to like item" });
+
+      return res.status(INTERNAL_SERVER_ERROR).send({
+        error: "Failed to like item",
+      });
     });
 };
 
+// DELETE /items/:itemId/likes
 const unlikeItem = (req, res) => {
   const { itemId } = req.params;
+
   ClothingItem.findByIdAndUpdate(
     itemId,
     { $pull: { likes: req.user._id } },
@@ -82,13 +122,22 @@ const unlikeItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+
       if (err.name === "CastError") {
-        return res.status(400).send({ error: "Invalid item ID format" });
+        return res.status(BAD_REQUEST).send({
+          error: "Invalid item ID format",
+        });
       }
+
       if (err.message === "Item not found") {
-        return res.status(404).send({ error: "Item not found" });
+        return res.status(NOT_FOUND).send({
+          error: "Item not found",
+        });
       }
-      res.status(500).send({ error: "Failed to unlike item" });
+
+      return res.status(INTERNAL_SERVER_ERROR).send({
+        error: "Failed to unlike item",
+      });
     });
 };
 

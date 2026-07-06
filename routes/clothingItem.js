@@ -8,7 +8,7 @@ const {
   unlikeItem,
 } = require("../controllers/clothingItem");
 
-//CRUD
+// CRUD
 
 // Get all items
 router.get("/", getItems);
