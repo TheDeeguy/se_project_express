@@ -12,7 +12,7 @@ const getUsers = (req, res) => {
     .catch((err) => {
       console.error(err);
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to load users",
+        message: "Failed to load users",
       });
     });
 };
@@ -28,12 +28,12 @@ const createUser = (req, res) => {
 
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({
-          error: err.message,
+          message: err.message,
         });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to create user",
+        message: "Failed to create user",
       });
     });
 };
@@ -50,18 +50,18 @@ const getUser = (req, res) => {
 
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({
-          error: "Invalid user ID format",
+          message: "Invalid user ID format",
         });
       }
 
       if (err.message === "User not found") {
         return res.status(NOT_FOUND).send({
-          error: "User not found",
+          message: "User not found",
         });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to load user",
+        message: "Failed to load user",
       });
     });
 };

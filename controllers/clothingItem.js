@@ -19,13 +19,12 @@ const createItem = (req, res) => {
 
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({
-          error: err.message,
+          message: err.message,
         });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
         message: "Error from createItem",
-        error: err.message,
       });
     });
 };
@@ -38,7 +37,7 @@ const getItems = (req, res) => {
       console.error(err);
 
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to load items",
+        message: "Failed to load items",
       });
     });
 };
@@ -57,18 +56,18 @@ const deleteItem = (req, res) => {
 
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({
-          error: "Invalid item ID format",
+          message: "Invalid item ID format",
         });
       }
 
       if (err.message === "Item not found") {
         return res.status(NOT_FOUND).send({
-          error: "Item not found",
+          message: "Item not found",
         });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to delete item",
+        message: "Failed to delete item",
       });
     });
 };
@@ -91,18 +90,18 @@ const likeItem = (req, res) => {
 
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({
-          error: "Invalid item ID format",
+          message: "Invalid item ID format",
         });
       }
 
       if (err.message === "Item not found") {
         return res.status(NOT_FOUND).send({
-          error: "Item not found",
+          message: "Item not found",
         });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to like item",
+        message: "Failed to like item",
       });
     });
 };
@@ -125,18 +124,18 @@ const unlikeItem = (req, res) => {
 
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({
-          error: "Invalid item ID format",
+          message: "Invalid item ID format",
         });
       }
 
       if (err.message === "Item not found") {
         return res.status(NOT_FOUND).send({
-          error: "Item not found",
+          message: "Item not found",
         });
       }
 
       return res.status(INTERNAL_SERVER_ERROR).send({
-        error: "Failed to unlike item",
+        message: "Failed to unlike item",
       });
     });
 };
